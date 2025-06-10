@@ -1,0 +1,39 @@
+def depth_limited_search(graph, start, goal, limit):
+    frontier = [(start, [start])]
+    result = None
+
+    while frontier:
+        node, path = frontier.pop()
+
+
+        if node == goal:
+            return path
+
+        # If the depth limit is reached, return 'cutoff'
+        if len(path) > limit:
+            result = 'cutoff'
+            continue
+
+        # Add neighbors if within depth limit
+        for neighbor in graph.get(node, []):
+            if neighbor not in path:  # Avoid cycles
+                frontier.append((neighbor, path + [neighbor]))
+
+    return result or "failure"
+
+
+# Example graph
+graph = {
+     'A': ['B', 'C'],
+     'B': ['D', 'E'],
+     'C': ['F'],
+     'D': [],
+     'E': [],
+     'F': []
+}
+
+start = 'A'
+goal = 'D'
+limit = 2
+result = depth_limited_search(graph, start, goal, limit)
+print("Depth Limited Search Result:", result)
